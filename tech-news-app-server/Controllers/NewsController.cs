@@ -44,10 +44,12 @@ namespace tech_news_app_server.NewsApi
     public class CategoryRequest
     {
         public string category { get; set; } = string.Empty;
+        public string country { get; set; } = string.Empty;
     }
     public class GenreRequest
     {
         public string genre { get; set; } = string.Empty;
+        public string country { get; set; } = string.Empty;
     }
 
 }
@@ -61,10 +63,13 @@ namespace tech_news_app_server.Controllers
 
         private readonly NewsApiSettings _newsApiSettings;
         private readonly HttpClient _httpClient;
-        public NewsApiController(IOptions<NewsApiSettings> settings, IHttpClientFactory httpClientFactory)
+        private readonly ILogger<NewsApiController> _logger;
+
+        public NewsApiController(IOptions<NewsApiSettings> settings, IHttpClientFactory httpClientFactory, ILogger<NewsApiController> logger)
         {
             _newsApiSettings = settings.Value;
             _httpClient = httpClientFactory.CreateClient();
+            _logger = logger;
         }
 
         // Task to fetch articles from the News API, responds with a JSON string object
@@ -114,7 +119,7 @@ namespace tech_news_app_server.Controllers
             {
                 try
                 {
-                    _url = $"{_newsApiSettings.BaseUrl}/top-headlines?category={request.category}&page={page}&apiKey={_newsApiSettings.ApiKey}";
+                    _url = $"{_newsApiSettings.BaseUrl}/top-headlines?category={request.category}&country={request.country}&apiKey={_newsApiSettings.ApiKey}&page={page}";
                     var NewsObject = await GetArticleContent(_httpClient, _url);
                     if (NewsObject != null)
                     {
@@ -152,7 +157,7 @@ namespace tech_news_app_server.Controllers
             {
                 try
                 {
-                    string _url = $"{_newsApiSettings.BaseUrl}/top-headlines?q={request.genre}&page={page}&apiKey={_newsApiSettings.ApiKey}";
+                    string _url = $"{_newsApiSettings.BaseUrl}/top-headlines?q={request.genre}&country={request.country}&apiKey={_newsApiSettings.ApiKey}&page={page}";
                     var NewsObject = await GetArticleContent(_httpClient, _url);
                     if (NewsObject != null)
                     {

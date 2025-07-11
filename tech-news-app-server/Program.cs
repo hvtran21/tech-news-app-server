@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using tech_news_app_server.NewsApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<NewsApiSettings>(builder.Configuration.GetSection("NewsApiSettings"));
 // inject a HTTP client
 builder.Services.AddHttpClient();
+// clear old logs, and add console to logging provider
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 var app = builder.Build();
 
