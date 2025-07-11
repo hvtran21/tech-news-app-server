@@ -1,0 +1,9 @@
+@tech_news_app_server_HostAddress = http://localhost:5258
+
+POST {{tech_news_app_server_HostAddress}}/newsapi/bycategory
+Content-Type: application/json
+Accept: application/json
+
+{
+  "category": "technology"
+}
