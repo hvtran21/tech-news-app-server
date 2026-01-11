@@ -168,7 +168,7 @@ namespace tech_news_app_server.Controllers
                     }
                     else
                     {
-                        throw new System.Exception("Response from GetArticleContent returned null, terminating...");
+                        throw new Exception("Response from GetArticleContent returned null, terminating...");
                     }
                 }
                 catch (HttpRequestException e)
